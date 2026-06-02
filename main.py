@@ -27,6 +27,13 @@ vela_b = []
 for i in range(4):
     vela_b.append(image.load(f"Atividade_12/cenario/candleB_0{i+1}.png"))
 
+# Variáveis dos espinhos
+curr_frame_spike = 0
+anim_timer_spike = 0
+spike = []
+for i in range(5):
+    spike.append(image.load(f"Atividade_12/cenario/spike_0{i+1}.png"))
+
 mapa_joguinho = [
     "XXXXXXXXXXXXXX",
   "XXXXXXXXXXXXXX", 
@@ -68,7 +75,17 @@ while True:
             curr_frame_vela_b = 0
         anim_timer_vela_b = 0
 
+    # Animação dos espinhos
+    anim_timer_spike += dt
+    anim_timer_sec_spike = anim_timer_spike / 1000
 
+    if anim_timer_sec_spike >= 0.25:
+        curr_frame_spike += 1
+        if curr_frame_spike >= len(spike):
+            curr_frame_spike = 0
+        anim_timer_spike = 0
+    
+    
     old_pos_x = pos_x
     old_pos_y = pos_y
 
@@ -105,6 +122,9 @@ while True:
     # Renderização da vela animada
     screen.blit(vela[curr_frame_vela], (200,200))
     screen.blit(vela_b[curr_frame_vela_b], (400,200))
+
+    # Renderização dos espinhos animados
+    screen.blit(spike[curr_frame_spike], (600,200))
 
     # Renderiza o mapa (cenário)
     screen.blit(mapa_2, (-55, -40),(0,0,290,190) )  # Desenha o cenário na posição 
