@@ -16,7 +16,10 @@ pos_y = 0
 mapa_3 = image.load("Atividade_12/sprites_separados/sprite_4.png")
 mapa_4 = image.load("Atividade_12/spritesheet.png")
 mapa_5 = image.load("Atividade_12/sprites_separados/sprite_24.png")
-
+mapa_6 = image.load("Atividade_12/imagens_masmorra/parede_2.png")
+mapa_7 = image.load("Atividade_12/imagens_masmorra/porta.png")
+mapa_8 = image.load("Atividade_12/imagens_masmorra/teto.png")
+mapa_9 = image.load("Atividade_12/imagens_masmorra/parede_esquerda.png")
 
 # Variáveis para animação do personagem
 curr_frame = 0
@@ -27,7 +30,6 @@ vel_zant_x = 4
 zant_olhando_direita = True
 zant_olhando_cima = True
 vel_zant_y = 4
-zant_direcao = 0  # 0=direita, 1=cima, 2=baixo, 3=esquerda
 
 
 # Variáveis para animação da vela tipo A
@@ -127,22 +129,18 @@ while True:
     if keys[K_d]: # Direita
         velocidade_atual_zant_x = vel_zant_x
         zant_olhando_direita = True
-        zant_direcao = 0
         zant_andando = True
     elif keys[K_a]: # Esquerda
         velocidade_atual_zant_x = -vel_zant_x
         zant_olhando_direita = False
-        zant_direcao = 3
         zant_andando = True
 
     # 3. Verifica o Eixo Y (Vertical)
     if keys[K_w]: # Cima (No Pygame, para cima é NEGATIVO)
         velocidade_atual_zant_y = -vel_zant_y
-        zant_direcao = 1
         zant_andando = True
     elif keys[K_s]: # Baixo (No Pygame, para baixo é POSITIVO)
         velocidade_atual_zant_y = vel_zant_y
-        zant_direcao = 2
         zant_andando = True
 
     # 4. ATUALIZA A POSIÇÃO DO PERSONAGEM
@@ -180,8 +178,8 @@ while True:
 
 
 
-    screen.fill((255, 255, 255))  # Limpa a tela com cinza
-    #screen.fill((0,0,0))
+    #screen.fill((255, 255, 255))  # Limpa a tela com cinza
+    screen.fill((0,0,0))
     # Renderização da vela animada
     screen.blit(vela[curr_frame_vela], (200,200))
     #screen.blit(vela_b[curr_frame_vela_b], (400,180))
@@ -275,7 +273,7 @@ while True:
             screen.blit(mapa_3, (x, y), (0, 200, 20, 32))
 
     # Blit especial no final
-    screen.blit(vela_b[curr_frame_vela_b], (430, 200))
+    screen.blit(vela_b[curr_frame_vela_b], (430, 300))
 
 
     # Para Baixo
@@ -333,30 +331,59 @@ while True:
 
 # Coluna x=440 (pequenas paredes)
     for y in [200, 210]:
-        screen.blit(mapa_5, (440, y), (0, 50, 100, 100))
+        screen.blit(mapa_9, (390, y), (0, 50, 100, 100))
 
 
 
 
     # Paredes Lado de Cima
-    screen.blit(mapa_4,(300,100),(390,300,200,300))
+   # Teto parte de baixo
+    for x in range(650, 870, 40):
+        screen.blit(mapa_8, (x, 590), (0, 0, 200, 100))
 
+# Teto parte de cima 2
+    for x in range(405, 665, 40):
+        screen.blit(mapa_8, (x, 360), (0, 0, 200, 100))
 
+# Teto da parte de cima 1
+    teto_cima_1 = [
+    (700, 200, 100),
+    (740, 200, 100),
+    (780, 200, 100),
+    (820, 55, 100),   # Guina
+    (915, 200, 100),
+    (955, 200, 100),
+    (995, 200, 100),
+    (1035, 200, 100),
+    (1055, 70, 100),
+    ]
+    for x, w, h in teto_cima_1:
+        screen.blit(mapa_8, (x, 470), (0, 0, w, h))
 
-
+# Outras blits individuais (que não repetem padrão)
+    screen.blit(mapa_7, (385, 115), (0, 0, 200, 100))
+    screen.blit(mapa_6, (447, 250), (0, 0, 200, 100))
+    screen.blit(mapa_6, (548, 250), (0, 0, 200, 79))
+    screen.blit(mapa_6, (680, 490), (0, 0, 200, 79))
+    screen.blit(mapa_6, (590, 490), (0, 0, 200, 79))
+    screen.blit(mapa_6, (915, 350), (0, 0, 200, 100))
+    screen.blit(mapa_6, (745, 350), (0, 0, 180, 100))
     
 
-    # Personagem
+
+
+     # Personagem
     zant_surface = Surface((64,64), SRCALPHA)
-    zant_surface.blit(zant, (0,0), (64*(curr_frame % 6), (zant_direcao)*64, 64, 64))
+    zant_surface.blit(zant, (0,0), (64*(curr_frame % 6), (curr_frame // 6)*64, 64, 64))
 
     if not zant_olhando_direita:
         zant_surface = transform.flip(zant_surface, True, False)
     
     screen.blit(zant_surface, (zant_x, zant_y))
 
-
-
     
 
     display.update()
+    
+
+    
