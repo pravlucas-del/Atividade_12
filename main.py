@@ -65,19 +65,6 @@ mapa_joguinho = [
   "TTTTTTTPPTTTTT", 
   "TTTTTTTPPTTTTT",]
 
-# --- FUNÇÃO DE COLISÃO ---
-def verificar_colisao(zant_x, zant_y, paredes_rects):
-    """
-    Verifica se o personagem colidiu com alguma parede.
-    Retorna True se houver colisão, False caso contrário.
-    """
-    zant_rect = Rect(zant_x, zant_y, 64, 64)  # Rect do personagem (64x64)
-    
-    for parede_rect in paredes_rects:
-        if zant_rect.colliderect(parede_rect):
-            return True
-    return False
-
 # --- LOOP PRINCIPAL ---
 while True:
     for e in event.get():
@@ -156,8 +143,61 @@ while True:
         velocidade_atual_zant_y = vel_zant_y
         zant_andando = True
 
-    # --- RENDERIZAÇÃO (PARA CRIAR LISTA DE RECTS) ---
-    # Primeiro, vamos criar a lista de coordenadas e paredes que será usada
+    # --- ATUALIZA A POSIÇÃO DO PERSONAGEM (SEM COLISÃO) ---
+    zant_x += velocidade_atual_zant_x
+    zant_y += velocidade_atual_zant_y
+
+    # --- ANIMA O PERSONAGEM ---
+    if zant_andando:
+        anim_timer += dt
+        if anim_timer >= 100:  # Muda frame a cada 100ms
+            curr_frame += 1
+            if curr_frame >= 6:  # A animação tem 6 frames
+                curr_frame = 0
+            anim_timer = 0
+    else:
+        curr_frame = 0
+    
+         
+        
+        
+    #for i in range(len(mapa_joguinho)):
+     #   for j in range(len(mapa_joguinho[i])):
+      #      if mapa_joguinho[i][j] == "X":
+       #         screen.blit(mapa_2, (j*64, i*64),(0,0,64,64) )  # Desenha o cenário na posição 
+        #    elif mapa_joguinho[i][j] == "G":
+         #       screen.blit(mapa_2, (j*64, i*64),(64,0,64,64) )  # Desenha o cenário na posição 
+          #  elif mapa_joguinho[i][j] == "T":
+           #     screen.blit(mapa_2, (j*64, i*64),(128,0,64,64) )  # Desenha o cenário na posição 
+            #elif mapa_joguinho[i][j] == "B":
+             #   screen.blit(mapa_2, (j*64, i*64),(192,0,64,64) )  # Desenha o cenário na posição 
+           # elif mapa_joguinho[i][j] == "A":
+            #    screen.blit(mapa_2, (j*64, i*64),(256,0,64,64) )  # Desenha o cenário na posição 
+          #  elif mapa_joguinho[i][j] == "P":
+           #     screen.blit(mapa_2, (j*64, i*64),(320,0,64,64) )  # Desenha o cenário na posição
+
+
+
+    #screen.fill((255, 255, 255))  # Limpa a tela com cinza
+    screen.fill((0,0,0))
+    # Renderização da vela animada
+    screen.blit(vela[curr_frame_vela], (200,200))
+    #screen.blit(vela_b[curr_frame_vela_b], (400,180))
+
+    # Renderização dos espinhos animados
+    #screen.blit(spike[curr_frame_spike], (600,200))
+
+    # Renderiza o mapa (cenário)
+    screen.blit(mapa_2, (-55, -40),(0,0,290,190) )  # Desenha o cenário na posição 
+    screen.blit(mapa_2, (150, -40),(0,0,290,190) )  # Desenha o cenário na posição 
+    screen.blit(mapa_2, (350, -40),(0,0,290,190) )  # Desenha o cenário na posição
+    screen.blit(mapa_2, (550, -40),(0,0,290,190) )  # Desenha o cenário na posição
+    screen.blit(mapa_2, (750, -40),(0,0,290,190) )  # Desenha o cenário na posição
+    screen.blit(mapa_2, (950, -40),(0,0,290,190) )  # Desenha o cenário na posição
+    screen.blit(mapa_2, (1150, -40),(0,0,290,190) )  # Desenha o cenário na posição
+    
+    # --- RENDERIZAÇÃO (PARA CRIAR LISTA DE COORDENADAS) ---
+    # Primeiro, vamos criar a lista de coordenadas que será usada
     
     coordenadas = [
     # Parte inferior (y=600, 610)
@@ -219,146 +259,6 @@ while True:
     (1035, 200, 100),
     (1055, 70, 100),
     ]
-
-    # --- CRIANDO LISTA DE RECTS PARA COLISÃO ---
-    paredes_rects = []
-
-    # Paredes Lado Direito
-    paredes_rects.append(Rect(610, 600, 47, 150))
-    paredes_rects.append(Rect(610, 550, 47, 150))
-
-    # Coluna x=590 (parede grande)
-    for y in range(540, 690, 10):
-        paredes_rects.append(Rect(590, y, 20, 32))
-
-    # Coluna x=870 (parede média)
-    for y in range(400, 480, 10):
-        paredes_rects.append(Rect(870, y, 20, 32))
-
-    # Coluna x=700 (paredes irregulares)
-    for y in [290, 300, 310, 320, 330, 340, 350, 360, 370, 375]:
-        paredes_rects.append(Rect(700, y, 20, 32))
-
-    # Coluna x=440 (pequenas paredes)
-    for y in [200, 210]:
-        paredes_rects.append(Rect(390, y, 20, 32))
-
-    # Teto parte de baixo
-    for x in range(650, 870, 40):
-        paredes_rects.append(Rect(x, 590, 20, 32))
-
-    # Teto parte de cima 2
-    for x in range(405, 665, 40):
-        paredes_rects.append(Rect(x, 360, 20, 32))
-
-    # Teto da parte de cima 1
-    for x, y, w in teto_cima_1:
-        paredes_rects.append(Rect(x, 470, 20, 32))
-
-    # Outras blits individuais
-    paredes_rects.append(Rect(447, 250, 20, 32))
-    paredes_rects.append(Rect(548, 250, 20, 32))
-    paredes_rects.append(Rect(680, 490, 20, 32))
-    paredes_rects.append(Rect(590, 490, 20, 32))
-    paredes_rects.append(Rect(915, 350, 20, 32))
-    paredes_rects.append(Rect(745, 350, 20, 32))
-
-    # Plataformas (coordenadas list)
-    for x, y in coordenadas:
-        paredes_rects.append(Rect(x, y, 20, 32))
-
-    # Pontos especiais
-    for x, y in pontos_especiais:
-        paredes_rects.append(Rect(x, y, 20, 32))
-
-    # Pontes
-    for x in range(910, 1110, 10):
-        for y in range(400, 450, 10):
-            paredes_rects.append(Rect(x, y, 20, 32))
-
-    for x in range(700, 870, 10):
-        for y in range(400, 450, 10):
-            paredes_rects.append(Rect(x, y, 20, 32))
-
-    for x in range(700, 740, 10):
-        for y in range(300, 390, 10):
-            paredes_rects.append(Rect(x, y, 20, 32))
-
-    for x in range(400, 700, 10):
-        for y in range(300, 340, 10):
-            paredes_rects.append(Rect(x, y, 20, 32))
-
-    for x in range(400, 440, 10):
-        for y in range(180, 300, 10):
-            paredes_rects.append(Rect(x, y, 20, 32))
-
-    for x in range(590, 910, 10):
-        paredes_rects.append(Rect(x, 540, 20, 32))
-
-    # Linha horizontal de cima (Y=530 até Y=400)
-    for y in range(400, 540, 10):
-        for x in range(870, 910, 10):
-            paredes_rects.append(Rect(x, y, 20, 32))
-
-    # --- 4. ATUALIZA A POSIÇÃO DO PERSONAGEM (COM COLISÃO) ---
-    nova_zant_x = zant_x + velocidade_atual_zant_x
-    nova_zant_y = zant_y + velocidade_atual_zant_y
-    
-    # Verifica colisão antes de atualizar a posição
-    if not verificar_colisao(nova_zant_x, zant_y, paredes_rects):
-        zant_x = nova_zant_x  # Permite movimento horizontal
-    
-    if not verificar_colisao(zant_x, nova_zant_y, paredes_rects):
-        zant_y = nova_zant_y  # Permite movimento vertical
-
-    # 5. ANIMA O PERSONAGEM
-    if zant_andando:
-        anim_timer += dt
-        if anim_timer >= 100:  # Muda frame a cada 100ms
-            curr_frame += 1
-            if curr_frame >= 6:  # A animação tem 6 frames
-                curr_frame = 0
-            anim_timer = 0
-    else:
-        curr_frame = 0
-    
-         
-        
-        
-    #for i in range(len(mapa_joguinho)):
-     #   for j in range(len(mapa_joguinho[i])):
-      #      if mapa_joguinho[i][j] == "X":
-       #         screen.blit(mapa_2, (j*64, i*64),(0,0,64,64) )  # Desenha o cenário na posição 
-        #    elif mapa_joguinho[i][j] == "G":
-         #       screen.blit(mapa_2, (j*64, i*64),(64,0,64,64) )  # Desenha o cenário na posição 
-          #  elif mapa_joguinho[i][j] == "T":
-           #     screen.blit(mapa_2, (j*64, i*64),(128,0,64,64) )  # Desenha o cenário na posição 
-            #elif mapa_joguinho[i][j] == "B":
-             #   screen.blit(mapa_2, (j*64, i*64),(192,0,64,64) )  # Desenha o cenário na posição 
-           # elif mapa_joguinho[i][j] == "A":
-            #    screen.blit(mapa_2, (j*64, i*64),(256,0,64,64) )  # Desenha o cenário na posição 
-          #  elif mapa_joguinho[i][j] == "P":
-           #     screen.blit(mapa_2, (j*64, i*64),(320,0,64,64) )  # Desenha o cenário na posição
-
-
-
-    #screen.fill((255, 255, 255))  # Limpa a tela com cinza
-    screen.fill((0,0,0))
-    # Renderização da vela animada
-    screen.blit(vela[curr_frame_vela], (200,200))
-    #screen.blit(vela_b[curr_frame_vela_b], (400,180))
-
-    # Renderização dos espinhos animados
-    #screen.blit(spike[curr_frame_spike], (600,200))
-
-    # Renderiza o mapa (cenário)
-    screen.blit(mapa_2, (-55, -40),(0,0,290,190) )  # Desenha o cenário na posição 
-    screen.blit(mapa_2, (150, -40),(0,0,290,190) )  # Desenha o cenário na posição 
-    screen.blit(mapa_2, (350, -40),(0,0,290,190) )  # Desenha o cenário na posição
-    screen.blit(mapa_2, (550, -40),(0,0,290,190) )  # Desenha o cenário na posição
-    screen.blit(mapa_2, (750, -40),(0,0,290,190) )  # Desenha o cenário na posição
-    screen.blit(mapa_2, (950, -40),(0,0,290,190) )  # Desenha o cenário na posição
-    screen.blit(mapa_2, (1150, -40),(0,0,290,190) )  # Desenha o cenário na posição
     
     # Desenhar todas as coordenadas
     for x, y in coordenadas:
