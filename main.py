@@ -65,6 +65,19 @@ mapa_joguinho = [
   "TTTTTTTPPTTTTT", 
   "TTTTTTTPPTTTTT",]
 
+# --- FUNÇÃO DE COLISÃO ---
+def verificar_colisao(zant_x, zant_y, paredes_rects):
+    """
+    Verifica se o personagem colidiu com alguma parede.
+    Retorna True se houver colisão, False caso contrário.
+    """
+    zant_rect = Rect(zant_x, zant_y, 64, 64)  # Rect do personagem (64x64)
+    
+    for parede_rect in paredes_rects:
+        if zant_rect.colliderect(parede_rect):
+            return True
+    return False
+
 # --- LOOP PRINCIPAL ---
 while True:
     for e in event.get():
@@ -143,9 +156,173 @@ while True:
         velocidade_atual_zant_y = vel_zant_y
         zant_andando = True
 
-    # 4. ATUALIZA A POSIÇÃO DO PERSONAGEM
-    zant_x += velocidade_atual_zant_x
-    zant_y += velocidade_atual_zant_y
+    # --- RENDERIZAÇÃO (PARA CRIAR LISTA DE RECTS) ---
+    # Primeiro, vamos criar a lista de coordenadas e paredes que será usada
+    
+    coordenadas = [
+    # Parte inferior (y=600, 610)
+    (600,600), (610,600),
+    (600,610), (610,610),
+    
+    # Coluna direita (x=610, y=620-690)
+    (610,620), (610,630), (610,640), (610,650),
+    (610,660), (610,670), (610,680), (610,690),
+    
+    # Linha horizontal superior (y=590)
+    (610,590), (620,590), (630,590), (640,590),
+    
+    # Linha y=580
+    (600,580), (610,580), (620,580), (630,580),
+    (590,580),
+    
+    # Linha y=570
+    (590,570), (600,570), (610,570), (620,570),
+    (630,570), (640,570),
+    
+    # Linha y=560 (a mais longa)
+    (640,560), (650,560), (660,560), (670,560),
+    (680,560), (690,560), (700,560), (710,560),
+    (720,560), (730,560), (740,560), (750,560),
+    (760,560), (770,560), (780,560), (790,560),
+    (800,560), (810,560), (820,560), (830,560),
+    (840,560), (850,560), (860,560), (870,560),
+    (880,560), (890,560), (900,560),
+    (590,560), (600,560), (610,560), (620,560),
+    (630,560),
+    
+    # Linha y=550
+    (590,550), (600,550), (610,550), (620,550),
+    (630,550), (640,550), (650,550), (660,550),
+    (670,550), (680,550), (690,550), (700,550),
+    (710,550), (720,550), (730,550), (740,550),
+    (750,550), (760,550), (770,550), (780,550),
+    (790,550), (800,550), (810,550), (820,550),
+    (830,550), (840,550), (850,550), (860,550),
+    (870,550), (880,550), (890,550), (900,550),
+    ]
+
+    # Pontos específicos
+    pontos_especiais = [
+    (630, 600), (630, 610),
+    (630, 650), (630, 660)
+    ]
+
+    # Teto da parte de cima 1
+    teto_cima_1 = [
+    (700, 200, 100),
+    (740, 200, 100),
+    (780, 200, 100),
+    (820, 55, 100),   # Guina
+    (915, 200, 100),
+    (955, 200, 100),
+    (995, 200, 100),
+    (1035, 200, 100),
+    (1055, 70, 100),
+    ]
+
+    # --- CRIANDO LISTA DE RECTS PARA COLISÃO ---
+    paredes_rects = []
+
+    # Paredes Lado Direito
+    paredes_rects.append(Rect(610, 600, 47, 150))
+    paredes_rects.append(Rect(610, 550, 47, 150))
+
+    # Coluna x=590 (parede grande)
+    for y in range(540, 690, 10):
+        paredes_rects.append(Rect(590, y, 100, 200))
+
+    # Coluna x=870 (parede média)
+    for y in range(400, 480, 10):
+        paredes_rects.append(Rect(870, y, 100, 100))
+
+    # Coluna x=700 (paredes irregulares)
+    for y in [290, 300, 310, 320, 330, 340, 350, 360, 370, 375]:
+        paredes_rects.append(Rect(700, y, 100, 100))
+
+    # Coluna x=440 (pequenas paredes)
+    for y in [200, 210]:
+        paredes_rects.append(Rect(390, y, 100, 100))
+
+    # Teto parte de baixo
+    for x in range(650, 870, 40):
+        paredes_rects.append(Rect(x, 590, 200, 100))
+
+    # Teto parte de cima 2
+    for x in range(405, 665, 40):
+        paredes_rects.append(Rect(x, 360, 200, 100))
+
+    # Teto da parte de cima 1
+    for x, y, w in teto_cima_1:
+        paredes_rects.append(Rect(x, 470, w, 100))
+
+    # Outras blits individuais
+    paredes_rects.append(Rect(385, 115, 200, 100))
+    paredes_rects.append(Rect(447, 250, 200, 100))
+    paredes_rects.append(Rect(548, 250, 200, 79))
+    paredes_rects.append(Rect(680, 490, 200, 79))
+    paredes_rects.append(Rect(590, 490, 200, 79))
+    paredes_rects.append(Rect(915, 350, 200, 100))
+    paredes_rects.append(Rect(745, 350, 180, 100))
+
+    # Plataformas (coordenadas list)
+    for x, y in coordenadas:
+        paredes_rects.append(Rect(x, y, 20, 32))
+
+    # Pontos especiais
+    for x, y in pontos_especiais:
+        paredes_rects.append(Rect(x, y, 20, 32))
+
+    # Pontes
+    for x in range(910, 1110, 10):
+        for y in range(400, 450, 10):
+            paredes_rects.append(Rect(x, y, 20, 32))
+
+    for x in range(700, 870, 10):
+        for y in range(400, 450, 10):
+            paredes_rects.append(Rect(x, y, 20, 32))
+
+    for x in range(700, 740, 10):
+        for y in range(300, 390, 10):
+            paredes_rects.append(Rect(x, y, 20, 32))
+
+    for x in range(400, 700, 10):
+        for y in range(300, 340, 10):
+            paredes_rects.append(Rect(x, y, 20, 32))
+
+    for x in range(400, 440, 10):
+        for y in range(180, 300, 10):
+            paredes_rects.append(Rect(x, y, 20, 32))
+
+    for y in range(600, 700, 10):
+        paredes_rects.append(Rect(590, y, 20, 32))
+
+    for y in range(620, 700, 10):
+        paredes_rects.append(Rect(600, y, 20, 32))
+
+    for y in range(600, 700, 10):
+        paredes_rects.append(Rect(620, y, 20, 32))
+
+    for x in [590, 600]:
+        paredes_rects.append(Rect(x, 590, 20, 32))
+
+    for x in range(590, 910, 10):
+        paredes_rects.append(Rect(x, 540, 20, 32))
+
+    # Linha horizontal de cima (Y=530 até Y=400)
+    for y in range(400, 540, 10):
+        for x in range(870, 910, 10):
+            paredes_rects.append(Rect(x, y, 20, 32))
+
+    # --- 4. ATUALIZA A POSIÇÃO DO PERSONAGEM (COM COLISÃO) ---
+    nova_zant_x = zant_x + velocidade_atual_zant_x
+    nova_zant_y = zant_y + velocidade_atual_zant_y
+    
+    # Verifica colisão antes de atualizar a posição
+    if not verificar_colisao(nova_zant_x, zant_y, paredes_rects):
+        zant_x = nova_zant_x  # Permite movimento horizontal
+    
+    if not verificar_colisao(zant_x, nova_zant_y, paredes_rects):
+        zant_y = nova_zant_y  # Permite movimento vertical
 
     # 5. ANIMA O PERSONAGEM
     if zant_andando:
@@ -196,58 +373,15 @@ while True:
     screen.blit(mapa_2, (950, -40),(0,0,290,190) )  # Desenha o cenário na posição
     screen.blit(mapa_2, (1150, -40),(0,0,290,190) )  # Desenha o cenário na posição
     
-    # Lado Direito - Lista de coordenadas
-    coordenadas = [
-    # Parte inferior (y=600, 610)
-    (600,600), (610,600),
-    (600,610), (610,610),
-    
-    # Coluna direita (x=610, y=620-690)
-    (610,620), (610,630), (610,640), (610,650),
-    (610,660), (610,670), (610,680), (610,690),
-    
-    # Linha horizontal superior (y=590)
-    (610,590), (620,590), (630,590), (640,590),
-    
-    # Linha y=580
-    (600,580), (610,580), (620,580), (630,580),
-    (590,580),
-    
-    # Linha y=570
-    (590,570), (600,570), (610,570), (620,570),
-    (630,570), (640,570),
-    
-    # Linha y=560 (a mais longa)
-    (640,560), (650,560), (660,560), (670,560),
-    (680,560), (690,560), (700,560), (710,560),
-    (720,560), (730,560), (740,560), (750,560),
-    (760,560), (770,560), (780,560), (790,560),
-    (800,560), (810,560), (820,560), (830,560),
-    (840,560), (850,560), (860,560), (870,560),
-    (880,560), (890,560), (900,560),
-    (590,560), (600,560), (610,560), (620,560),
-    (630,560),
-    
-    # Linha y=550
-    (590,550), (600,550), (610,550), (620,550),
-    (630,550), (640,550), (650,550), (660,550),
-    (670,550), (680,550), (690,550), (700,550),
-    (710,550), (720,550), (730,550), (740,550),
-    (750,550), (760,550), (770,550), (780,550),
-    (790,550), (800,550), (810,550), (820,550),
-    (830,550), (840,550), (850,550), (860,550),
-    (870,550), (880,550), (890,550), (900,550),
-    ]
-
     # Desenhar todas as coordenadas
     for x, y in coordenadas:
         screen.blit(mapa_3, (x, y), (0, 200, 20, 32))
     
-        rect = (0, 200, 20, 32)
-        # Linha horizontal de cima (Y=530 até Y=400)
-        for y in range(400, 540, 10):
-            for x in range(870, 910, 10):
-                screen.blit(mapa_3, (x, y), rect)
+    rect = (0, 200, 20, 32)
+    # Linha horizontal de cima (Y=530 até Y=400)
+    for y in range(400, 540, 10):
+        for x in range(870, 910, 10):
+            screen.blit(mapa_3, (x, y), rect)
 
     # Ponte pro Lado Direito
     # Versão otimizada com loops
@@ -281,30 +415,25 @@ while True:
     for y in range(600, 700, 10):
         screen.blit(mapa_3, (590, y), (0, 200, 20, 32))
 
-    # Pontos específicos (x=630)
-    pontos_especiais = [
-    (630, 600), (630, 610),
-    (630, 650), (630, 660)
-    ]
     for x, y in pontos_especiais:
         screen.blit(mapa_3, (x, y), (0, 200, 20, 32))
 
-# Blit especial
+    # Blit especial
     screen.blit(vela_b[curr_frame_vela_b], (600, 570))
 
     # Coluna x=600 (y=620 até 690)
     for y in range(620, 700, 10):
         screen.blit(mapa_3, (600, y), (0, 200, 20, 32))
 
-# Coluna x=620 (y=600 até 690)
+    # Coluna x=620 (y=600 até 690)
     for y in range(600, 700, 10):
         screen.blit(mapa_3, (620, y), (0, 200, 20, 32))
 
-# Pontos específicos (y=590)
+    # Pontos específicos (y=590)
     for x in [590, 600]:
         screen.blit(mapa_3, (x, 590), (0, 200, 20, 32))
 
-# Linha longa (y=540, x=590 até 900)
+    # Linha longa (y=540, x=590 até 900)
     for x in range(590, 910, 10):
         screen.blit(mapa_3, (x, 540), (0, 200, 20, 32))
                                    
@@ -316,20 +445,20 @@ while True:
     screen.blit(mapa_4, (610, 600), (0, 0, 47, 150))
     screen.blit(mapa_4, (610, 550), (0, 0, 47, 150))
 
-# Paredes Lado Esquerdo
-# Coluna x=590 (parede grande)
+    # Paredes Lado Esquerdo
+    # Coluna x=590 (parede grande)
     for y in range(540, 690, 10):
         screen.blit(mapa_5, (590, y), (0, 100, 100, 200))
 
-# Coluna x=870 (parede média)
+    # Coluna x=870 (parede média)
     for y in range(400, 480, 10):
         screen.blit(mapa_5, (870, y), (0, 50, 100, 100))
 
-# Coluna x=700 (paredes irregulares)
+    # Coluna x=700 (paredes irregulares)
     for y in [290, 300, 310, 320, 330, 340, 350, 360, 370, 375]:
         screen.blit(mapa_5, (700, y), (0, 50, 100, 100))
 
-# Coluna x=440 (pequenas paredes)
+    # Coluna x=440 (pequenas paredes)
     for y in [200, 210]:
         screen.blit(mapa_9, (390, y), (0, 50, 100, 100))
 
@@ -337,30 +466,19 @@ while True:
 
 
     # Paredes Lado de Cima
-   # Teto parte de baixo
+    # Teto parte de baixo
     for x in range(650, 870, 40):
         screen.blit(mapa_8, (x, 590), (0, 0, 200, 100))
 
-# Teto parte de cima 2
+    # Teto parte de cima 2
     for x in range(405, 665, 40):
         screen.blit(mapa_8, (x, 360), (0, 0, 200, 100))
 
-# Teto da parte de cima 1
-    teto_cima_1 = [
-    (700, 200, 100),
-    (740, 200, 100),
-    (780, 200, 100),
-    (820, 55, 100),   # Guina
-    (915, 200, 100),
-    (955, 200, 100),
-    (995, 200, 100),
-    (1035, 200, 100),
-    (1055, 70, 100),
-    ]
+    # Teto da parte de cima 1
     for x, w, h in teto_cima_1:
         screen.blit(mapa_8, (x, 470), (0, 0, w, h))
 
-# Outras blits individuais (que não repetem padrão)
+    # Outras blits individuais (que não repetem padrão)
     screen.blit(mapa_7, (385, 115), (0, 0, 200, 100))
     screen.blit(mapa_6, (447, 250), (0, 0, 200, 100))
     screen.blit(mapa_6, (548, 250), (0, 0, 200, 79))
@@ -372,7 +490,7 @@ while True:
 
 
 
-     # Personagem
+    # Personagem
     zant_surface = Surface((64,64), SRCALPHA)
     zant_surface.blit(zant, (0,0), (64*(curr_frame % 6), (curr_frame // 6)*64, 64, 64))
 
@@ -384,6 +502,3 @@ while True:
     
 
     display.update()
-    
-
-    
