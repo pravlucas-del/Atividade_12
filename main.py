@@ -281,12 +281,17 @@ while True:
     screen.blit(mapa_4,(390,600),(0,0,100,200))
     
 
+    # Ponte para Cima - OTIMIZADO COM LOOPS
+    rect = (0, 200, 20, 32)
+    # Linha horizontal de cima (Y=530 até Y=400)
+    for y in range(400, 540, 10):
+        for x in range(870, 910, 10):
+            screen.blit(mapa_3, (x, y), rect)
 
 
 
 
     screen.blit(mapa_3,(110,200),(0,200,20,32))
-
 
 
 
