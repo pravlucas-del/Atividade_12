@@ -25,11 +25,11 @@ mapa_9 = image.load("Atividade_12/imagens_masmorra/parede_esquerda.png")
 curr_frame = 0
 anim_timer = 0
 zant = image.load("Atividade_12/personagem/png/swordsman_lvl3/with_shadow/swordsman_lvl3_walk_with_shadow.png")
-zant_x, zant_y = 385, 115
-vel_zant_x = 4
+zant_x, zant_y = 600, 500  # CORRIGIDO: Posição inicial dentro do mapa
+vel_zant_x = 6  # AJUSTADO: Aumentado de 4 para movimento mais rápido
 zant_olhando_direita = True
 zant_olhando_cima = True
-vel_zant_y = 4
+vel_zant_y = 6  # AJUSTADO: Aumentado de 4 para movimento mais rápido
 
 
 # Variáveis para animação da vela tipo A
