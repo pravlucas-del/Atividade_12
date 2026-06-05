@@ -227,35 +227,35 @@ while True:
     paredes_rects.append(Rect(610, 600, 47, 150))
     paredes_rects.append(Rect(610, 550, 47, 150))
 
-    # Coluna x=590 (parede grande) - CORRIGIDO: 20x32 em vez de 100x200
+    # Coluna x=590 (parede grande)
     for y in range(540, 690, 10):
         paredes_rects.append(Rect(590, y, 20, 32))
 
-    # Coluna x=870 (parede média) - CORRIGIDO: 20x32 em vez de 100x100
+    # Coluna x=870 (parede média)
     for y in range(400, 480, 10):
         paredes_rects.append(Rect(870, y, 20, 32))
 
-    # Coluna x=700 (paredes irregulares) - CORRIGIDO: 20x32 em vez de 100x100
+    # Coluna x=700 (paredes irregulares)
     for y in [290, 300, 310, 320, 330, 340, 350, 360, 370, 375]:
         paredes_rects.append(Rect(700, y, 20, 32))
 
-    # Coluna x=440 (pequenas paredes) - CORRIGIDO: 20x32 em vez de 100x100
+    # Coluna x=440 (pequenas paredes)
     for y in [200, 210]:
         paredes_rects.append(Rect(390, y, 20, 32))
 
-    # Teto parte de baixo - CORRIGIDO: 20x32 em vez de 200x100
+    # Teto parte de baixo
     for x in range(650, 870, 40):
         paredes_rects.append(Rect(x, 590, 20, 32))
 
-    # Teto parte de cima 2 - CORRIGIDO: 20x32 em vez de 200x100
+    # Teto parte de cima 2
     for x in range(405, 665, 40):
         paredes_rects.append(Rect(x, 360, 20, 32))
 
-    # Teto da parte de cima 1 - CORRIGIDO: tamanho pequeno
+    # Teto da parte de cima 1
     for x, y, w in teto_cima_1:
         paredes_rects.append(Rect(x, 470, 20, 32))
 
-    # Outras blits individuais - CORRIGIDO para tamanhos menores
+    # Outras blits individuais
     paredes_rects.append(Rect(447, 250, 20, 32))
     paredes_rects.append(Rect(548, 250, 20, 32))
     paredes_rects.append(Rect(680, 490, 20, 32))
@@ -291,18 +291,6 @@ while True:
     for x in range(400, 440, 10):
         for y in range(180, 300, 10):
             paredes_rects.append(Rect(x, y, 20, 32))
-
-    for y in range(600, 700, 10):
-        paredes_rects.append(Rect(590, y, 20, 32))
-
-    for y in range(620, 700, 10):
-        paredes_rects.append(Rect(600, y, 20, 32))
-
-    for y in range(600, 700, 10):
-        paredes_rects.append(Rect(620, y, 20, 32))
-
-    for x in [590, 600]:
-        paredes_rects.append(Rect(x, 590, 20, 32))
 
     for x in range(590, 910, 10):
         paredes_rects.append(Rect(x, 540, 20, 32))
