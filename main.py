@@ -140,7 +140,22 @@ while True:
         velocidade_atual_zant_y = vel_zant_y
         zant_andando = True
 
+    # 4. ATUALIZA A POSIÇÃO DO PERSONAGEM
+    zant_x += velocidade_atual_zant_x
+    zant_y += velocidade_atual_zant_y
+
+    # 5. ANIMA O PERSONAGEM
+    if zant_andando:
+        anim_timer += dt
+        if anim_timer >= 100:  # Muda frame a cada 100ms
+            curr_frame += 1
+            if curr_frame >= 6:  # A animação tem 6 frames
+                curr_frame = 0
+            anim_timer = 0
+    else:
+        curr_frame = 0
     
+         
         
         
     #for i in range(len(mapa_joguinho)):
@@ -293,7 +308,6 @@ while True:
 
 
 
-
     # Paredes Lado Direito
     # Blits iniciais (mapa_4)
     screen.blit(mapa_4, (610, 600), (0, 0, 47, 150))
@@ -328,17 +342,16 @@ while True:
     
 
     # Personagem
-    zant_surface = Surface((64,64),SRCALPHA)
-    zant_surface.blit(zant_andando,(0,0),(64*(curr_frame % 6)),(curr_frame // 6),64,64)
+    zant_surface = Surface((64,64), SRCALPHA)
+    zant_surface.blit(zant, (0,0), (64*(curr_frame % 6), (curr_frame // 6)*64, 64, 64))
 
     if not zant_olhando_direita:
-        zant_surface = transform.flip(zant_surface,True,False)
+        zant_surface = transform.flip(zant_surface, True, False)
     
-    screen.blit(zant_surface, (zant_x,zant_y))
+    screen.blit(zant_surface, (zant_x, zant_y))
 
 
 
     
-
 
     display.update()
