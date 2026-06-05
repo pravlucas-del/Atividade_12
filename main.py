@@ -9,33 +9,46 @@ clock = time.Clock()
 
 #mapa = image.load("Atividade_12/Cenario/masmorra.png")
 #mapa = transform.scale(mapa, (1280, 720))  # Redimensiona o mapa para preencher a tela
-mapa_2 = image.load("cenario/masmorra.png")
+mapa_2 = image.load("Atividade_12/Cenario/masmorra.png")
 pos_x = 0
 pos_y = 0
 
-mapa_3 = image.load("sprites_separados/sprite_4.png")
-mapa_4 = image.load("spritesheet.png")
+mapa_3 = image.load("Atividade_12/sprites_separados/sprite_4.png")
+mapa_4 = image.load("Atividade_12/spritesheet.png")
+mapa_5 = image.load("Atividade_12/sprites_separados/sprite_24.png")
+
+
+# Variáveis para animação do personagem
+curr_frame = 0
+anim_timer = 0
+zant = image.load("Atividade_12/personagem/png/swordsman_lvl3/with_shadow/swordsman_lvl3_walk_with_shadow.png")
+zant_x, zant_y = 0, 0
+vel_zant_x = 4
+zant_olhando_direita = True
+zant_olhando_cima = True
+vel_zant_y = 4
+
 
 # Variáveis para animação da vela tipo A
 curr_frame_vela = 0
 anim_timer_vela = 0
 vela = []
 for i in range(4):
-    vela.append(image.load(f"cenario/candleA_0{i+1}.png"))
+    vela.append(image.load(f"Atividade_12/Cenario/candleA_0{i+1}.png"))
 
 # Variáveis para animação da vela tipo B
 curr_frame_vela_b = 0
 anim_timer_vela_b = 0
 vela_b = []
 for i in range(4):
-    vela_b.append(image.load(f"cenario/candleB_0{i+1}.png"))
+    vela_b.append(image.load(f"Atividade_12/Cenario/candleB_0{i+1}.png"))
 
 # Variáveis dos espinhos
 curr_frame_spike = 0
 anim_timer_spike = 0
 spike = []
 #for i in range(5):
-    #spike.append(image.load(f"cenario/spike_0{i+1}.png"))
+    #spike.append(image.load(f"Atividade_12/Cenario/spike_0{i+1}.png"))
 
 mapa_joguinho = [
     "XXXXXXXXXXXXXX",
@@ -102,7 +115,34 @@ while True:
     if keys[K_DOWN]:
         pos_y += 200 * dt / 1000  # Move para baixo
 
+    # --- LOGICA DE MOVIMENTAÇÃO ---
 
+    # 1. Inicializa as velocidades como 0 a cada frame (para ele parar se soltar as teclas)
+    velocidade_atual_zant_x = 0
+    velocidade_atual_zant_y = 0
+    zant_andando = False
+
+    # 2. Verifica o Eixo X (Horizontal)
+    if keys[K_d]: # Direita
+        velocidade_atual_zant_x = vel_zant_x
+        zant_olhando_direita = True
+        zant_andando = True
+    elif keys[K_a]: # Esquerda
+        velocidade_atual_zant_x = -vel_zant_x
+        zant_olhando_direita = False
+        zant_andando = True
+
+    # 3. Verifica o Eixo Y (Vertical)
+    if keys[K_w]: # Cima (No Pygame, para cima é NEGATIVO)
+        velocidade_atual_zant_y = -vel_zant_y
+        zant_andando = True
+    elif keys[K_s]: # Baixo (No Pygame, para baixo é POSITIVO)
+        velocidade_atual_zant_y = vel_zant_y
+        zant_andando = True
+
+    
+        
+        
     #for i in range(len(mapa_joguinho)):
      #   for j in range(len(mapa_joguinho[i])):
       #      if mapa_joguinho[i][j] == "X":
@@ -120,11 +160,11 @@ while True:
 
 
 
-    #screen.fill((255, 255, 255))  # Limpa a tela com cinza
-    screen.fill((0,0,0))
+    screen.fill((255, 255, 255))  # Limpa a tela com cinza
+    #screen.fill((0,0,0))
     # Renderização da vela animada
     screen.blit(vela[curr_frame_vela], (200,200))
-    screen.blit(vela_b[curr_frame_vela_b], (400,200))
+    #screen.blit(vela_b[curr_frame_vela_b], (400,180))
 
     # Renderização dos espinhos animados
     #screen.blit(spike[curr_frame_spike], (600,200))
@@ -138,162 +178,167 @@ while True:
     screen.blit(mapa_2, (950, -40),(0,0,290,190) )  # Desenha o cenário na posição
     screen.blit(mapa_2, (1150, -40),(0,0,290,190) )  # Desenha o cenário na posição
     
-    # Lado Direito
-    screen.blit(mapa_3, (600,600),(0,200,20,32))
-    screen.blit(mapa_3, (610,600),(0,200,20,32))
-    screen.blit(mapa_3, (600,610),(0,200,20,32))
-    screen.blit(mapa_3, (610,610),(0,200,20,32))
-    screen.blit(mapa_3, (610,620),(0,200,20,32))
-    screen.blit(mapa_3, (610,630),(0,200,20,32))
-    screen.blit(mapa_3, (610,640),(0,200,20,32))
-    screen.blit(mapa_3, (610,650),(0,200,20,32))
-    screen.blit(mapa_3, (610,660),(0,200,20,32))
-    screen.blit(mapa_3, (610,670),(0,200,20,32))
-    screen.blit(mapa_3, (610,680),(0,200,20,32))
-    screen.blit(mapa_3, (610,690),(0,200,20,32))
-    screen.blit(mapa_3, ( 610,590), (0,200,20,32))
-    screen.blit(mapa_3, ( 620,590), (0,200,20,32))
-    screen.blit(mapa_3, ( 630,590), (0,200,20,32))
-    screen.blit(mapa_3, ( 640,590), (0,200,20,32))
-    screen.blit(mapa_3, ( 630,580), (0,200,20,32))
-    screen.blit(mapa_3, ( 620,580), (0,200,20,32))
-    screen.blit(mapa_3, ( 610,580), (0,200,20,32))
-    screen.blit(mapa_3, ( 600,580), (0,200,20,32))
-    screen.blit(mapa_3, ( 590,580), (0,200,20,32))
-    screen.blit(mapa_3, ( 590,570), (0,200,20,32))
-    screen.blit(mapa_3, ( 600,570), (0,200,20,32))
-    screen.blit(mapa_3, ( 610,570), (0,200,20,32))
-    screen.blit(mapa_3, ( 620,570), (0,200,20,32))
-    screen.blit(mapa_3, ( 630,570), (0,200,20,32))
-    screen.blit(mapa_3, ( 640,570), (0,200,20,32))
-    screen.blit(mapa_3, ( 640,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 650,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 660,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 670,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 680,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 690,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 700,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 710,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 720,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 730,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 740,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 750,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 760,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 770,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 780,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 790,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 800,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 810,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 820,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 830,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 840,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 850,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 860,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 870,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 880,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 890,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 900,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 900,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 890,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 880,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 870,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 860,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 850,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 840,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 830,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 820,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 810,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 800,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 790,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 780,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 770,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 760,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 750,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 740,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 730,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 720,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 710,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 700,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 690,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 680,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 670,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 660,550), (0,200,20,32))    
-    screen.blit(mapa_3, ( 650,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 640,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 630,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 620,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 610,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 600,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 590,550), (0,200,20,32))
-    screen.blit(mapa_3, ( 590,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 600,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 610,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 620,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 630,560), (0,200,20,32))
-    screen.blit(mapa_3, ( 640,560), (0,200,20,32))
+    # Lado Direito - Lista de coordenadas
+    coordenadas = [
+    # Parte inferior (y=600, 610)
+    (600,600), (610,600),
+    (600,610), (610,610),
+    
+    # Coluna direita (x=610, y=620-690)
+    (610,620), (610,630), (610,640), (610,650),
+    (610,660), (610,670), (610,680), (610,690),
+    
+    # Linha horizontal superior (y=590)
+    (610,590), (620,590), (630,590), (640,590),
+    
+    # Linha y=580
+    (600,580), (610,580), (620,580), (630,580),
+    (590,580),
+    
+    # Linha y=570
+    (590,570), (600,570), (610,570), (620,570),
+    (630,570), (640,570),
+    
+    # Linha y=560 (a mais longa)
+    (640,560), (650,560), (660,560), (670,560),
+    (680,560), (690,560), (700,560), (710,560),
+    (720,560), (730,560), (740,560), (750,560),
+    (760,560), (770,560), (780,560), (790,560),
+    (800,560), (810,560), (820,560), (830,560),
+    (840,560), (850,560), (860,560), (870,560),
+    (880,560), (890,560), (900,560),
+    (590,560), (600,560), (610,560), (620,560),
+    (630,560),
+    
+    # Linha y=550
+    (590,550), (600,550), (610,550), (620,550),
+    (630,550), (640,550), (650,550), (660,550),
+    (670,550), (680,550), (690,550), (700,550),
+    (710,550), (720,550), (730,550), (740,550),
+    (750,550), (760,550), (770,550), (780,550),
+    (790,550), (800,550), (810,550), (820,550),
+    (830,550), (840,550), (850,550), (860,550),
+    (870,550), (880,550), (890,550), (900,550),
+    ]
+
+    # Desenhar todas as coordenadas
+    for x, y in coordenadas:
+        screen.blit(mapa_3, (x, y), (0, 200, 20, 32))
+    
+        rect = (0, 200, 20, 32)
+        # Linha horizontal de cima (Y=530 até Y=400)
+        for y in range(400, 540, 10):
+            for x in range(870, 910, 10):
+                screen.blit(mapa_3, (x, y), rect)
+
+    # Ponte pro Lado Direito
+    # Versão otimizada com loops
+    for x in range(910, 1110, 10):  # x: 910, 920, 930, ... 1100
+        for y in range(400, 450, 10):  # y: 400, 410, 420, 430, 440
+            screen.blit(mapa_3, (x, y), (0, 200, 20, 32))
+    # Ponte para o Lado Esquerdo
+    for x in range(700, 870, 10):  # x: 700, 710, 720, ... 860
+        for y in range(400, 450, 10):  # y: 400, 410, 420, 430, 440
+            screen.blit(mapa_3, (x, y), (0, 200, 20, 32))
+    
+    # Ponte para cima no Lado Esquerdo
+    for x in range(700, 740, 10):  # x: 700, 710, 720, 730
+        for y in range(300, 390, 10):  # y: 300, 310, 320, ... 380
+            screen.blit(mapa_3, (x, y), (0, 200, 20, 32))
+    # Ponte para o Lado Esquerdo
+    for x in range(400, 700, 10):  # x: 400, 410, 420, ... 690
+        for y in range(300, 340, 10):  # y: 300, 310, 320, 330
+            screen.blit(mapa_3, (x, y), (0, 200, 20, 32))
+    # Ponte para cima
+    for x in range(400, 440, 10):  # x: 400, 410, 420, 430
+        for y in range(180, 300, 10):  # y: 180, 190, 200, ... 290
+            screen.blit(mapa_3, (x, y), (0, 200, 20, 32))
+
+    # Blit especial no final
+    screen.blit(vela_b[curr_frame_vela_b], (430, 200))
 
 
     # Para Baixo
-    screen.blit(mapa_3, ( 590,600), (0,200,20,32))
-    screen.blit(mapa_3, ( 590,610), (0,200,20,32))
-    screen.blit(mapa_3, ( 590,620), (0,200,20,32))
-    screen.blit(mapa_3, ( 590,630), (0,200,20,32))
-    screen.blit(mapa_3, ( 590,640), (0,200,20,32))
-    screen.blit(mapa_3, ( 590,650), (0,200,20,32))
-    screen.blit(mapa_3, ( 590,660), (0,200,20,32))
-    screen.blit(mapa_3, ( 590,670), (0,200,20,32))
-    screen.blit(mapa_3, ( 590,680), (0,200,20,32))
-    screen.blit(mapa_3, ( 590,690), (0,200,20,32))
-    screen.blit(mapa_3, (630,600),(0,200,20,32))
-    screen.blit(mapa_3, (630,610),(0,200,20,32))
-    screen.blit(mapa_3, (630,650),(0,200,20,32))
-    screen.blit(mapa_3, (630,660),(0,200,20,32))
-    
+    # Coluna esquerda (x=590, y=600 até 690)
+    for y in range(600, 700, 10):
+        screen.blit(mapa_3, (590, y), (0, 200, 20, 32))
 
-    # Lado Esquerdo
-    screen.blit(mapa_3, (600,620),(0,200,20,32))
-    screen.blit(mapa_3, (600,630),(0,200,20,32))
-    screen.blit(mapa_3, (600,640),(0,200,20,32))
-    screen.blit(mapa_3, (600,650),(0,200,20,32))
-    screen.blit(mapa_3, (600,660),(0,200,20,32))
-    screen.blit(mapa_3, (600,670),(0,200,20,32))
-    screen.blit(mapa_3, (600,680),(0,200,20,32))
-    screen.blit(mapa_3, (600,690),(0,200,20,32))
+    # Pontos específicos (x=630)
+    pontos_especiais = [
+    (630, 600), (630, 610),
+    (630, 650), (630, 660)
+    ]
+    for x, y in pontos_especiais:
+        screen.blit(mapa_3, (x, y), (0, 200, 20, 32))
 
-    screen.blit(mapa_3, (620,600),(0,200,20,32))
-    screen.blit(mapa_3, (620,610),(0,200,20,32))
-    screen.blit(mapa_3, (620,620),(0,200,20,32))
-    screen.blit(mapa_3, (620,630),(0,200,20,32))
-    screen.blit(mapa_3, (620,640),(0,200,20,32))
-    screen.blit(mapa_3, (620,650),(0,200,20,32))
-    screen.blit(mapa_3, (620,660),(0,200,20,32))
-    screen.blit(mapa_3, (620,670),(0,200,20,32))
-    screen.blit(mapa_3, (620,680),(0,200,20,32))
-    screen.blit(mapa_3, (620,690),(0,200,20,32))
-    screen.blit(mapa_3, (600,590),(0,200,20,32))
-    screen.blit(mapa_3, (590,590),(0,200,20,32))
-    
+# Blit especial
+    screen.blit(vela_b[curr_frame_vela_b], (600, 570))
+
+    # Coluna x=600 (y=620 até 690)
+    for y in range(620, 700, 10):
+        screen.blit(mapa_3, (600, y), (0, 200, 20, 32))
+
+# Coluna x=620 (y=600 até 690)
+    for y in range(600, 700, 10):
+        screen.blit(mapa_3, (620, y), (0, 200, 20, 32))
+
+# Pontos específicos (y=590)
+    for x in [590, 600]:
+        screen.blit(mapa_3, (x, 590), (0, 200, 20, 32))
+
+# Linha longa (y=540, x=590 até 900)
+    for x in range(590, 910, 10):
+        screen.blit(mapa_3, (x, 540), (0, 200, 20, 32))
+                                   
+
+
+
+
     # Paredes Lado Direito
-    screen.blit(mapa_4,(610,600),(0,0,47,150))
-    screen.blit(mapa_4,(610,550),(0,0,47,150))
+    # Blits iniciais (mapa_4)
+    screen.blit(mapa_4, (610, 600), (0, 0, 47, 150))
+    screen.blit(mapa_4, (610, 550), (0, 0, 47, 150))
 
-    # Paredes Lado Esquerdo
-    screen.blit(mapa_4,(390,600),(0,0,100,200))
+# Paredes Lado Esquerdo
+# Coluna x=590 (parede grande)
+    for y in range(540, 690, 10):
+        screen.blit(mapa_5, (590, y), (0, 100, 100, 200))
+
+# Coluna x=870 (parede média)
+    for y in range(400, 480, 10):
+        screen.blit(mapa_5, (870, y), (0, 50, 100, 100))
+
+# Coluna x=700 (paredes irregulares)
+    for y in [290, 300, 310, 320, 330, 340, 350, 360, 370, 375]:
+        screen.blit(mapa_5, (700, y), (0, 50, 100, 100))
+
+# Coluna x=440 (pequenas paredes)
+    for y in [200, 210]:
+        screen.blit(mapa_5, (440, y), (0, 50, 100, 100))
+
+
+
+
+    # Paredes Lado de Cima
+    screen.blit(mapa_4,(300,100),(390,300,200,300))
+
+
+
+
     
 
-    # Ponte para Cima - OTIMIZADO COM LOOPS
-    rect = (0, 200, 20, 32)
-    # Linha horizontal de cima (Y=530 até Y=400)
-    for y in range(400, 540, 10):
-        for x in range(870, 910, 10):
-            screen.blit(mapa_3, (x, y), rect)
+    # Personagem
+    zant_surface = Surface((64,64),SRCALPHA)
+    zant_surface.blit(zant_andando,(0,0),(64*(curr_frame % 6)),(curr_frame // 6),64,64)
+
+    if not zant_olhando_direita:
+        zant_surface = transform.flip(zant_surface,True,False)
+    
+    screen.blit(zant_surface, (zant_x,zant_y))
 
 
 
-
-    screen.blit(mapa_3,(110,200),(0,200,20,32))
-
-
+    
 
 
     display.update()
