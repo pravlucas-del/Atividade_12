@@ -256,7 +256,6 @@ while True:
         paredes_rects.append(Rect(x, 470, w, 100))
 
     # Outras blits individuais
-    paredes_rects.append(Rect(385, 115, 200, 100))
     paredes_rects.append(Rect(447, 250, 200, 100))
     paredes_rects.append(Rect(548, 250, 200, 79))
     paredes_rects.append(Rect(680, 490, 200, 79))
