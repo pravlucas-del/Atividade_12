@@ -227,41 +227,41 @@ while True:
     paredes_rects.append(Rect(610, 600, 47, 150))
     paredes_rects.append(Rect(610, 550, 47, 150))
 
-    # Coluna x=590 (parede grande)
+    # Coluna x=590 (parede grande) - CORRIGIDO: 20x32 em vez de 100x200
     for y in range(540, 690, 10):
-        paredes_rects.append(Rect(590, y, 100, 200))
+        paredes_rects.append(Rect(590, y, 20, 32))
 
-    # Coluna x=870 (parede média)
+    # Coluna x=870 (parede média) - CORRIGIDO: 20x32 em vez de 100x100
     for y in range(400, 480, 10):
-        paredes_rects.append(Rect(870, y, 100, 100))
+        paredes_rects.append(Rect(870, y, 20, 32))
 
-    # Coluna x=700 (paredes irregulares)
+    # Coluna x=700 (paredes irregulares) - CORRIGIDO: 20x32 em vez de 100x100
     for y in [290, 300, 310, 320, 330, 340, 350, 360, 370, 375]:
-        paredes_rects.append(Rect(700, y, 100, 100))
+        paredes_rects.append(Rect(700, y, 20, 32))
 
-    # Coluna x=440 (pequenas paredes)
+    # Coluna x=440 (pequenas paredes) - CORRIGIDO: 20x32 em vez de 100x100
     for y in [200, 210]:
-        paredes_rects.append(Rect(390, y, 100, 100))
+        paredes_rects.append(Rect(390, y, 20, 32))
 
-    # Teto parte de baixo
+    # Teto parte de baixo - CORRIGIDO: 20x32 em vez de 200x100
     for x in range(650, 870, 40):
-        paredes_rects.append(Rect(x, 590, 200, 100))
+        paredes_rects.append(Rect(x, 590, 20, 32))
 
-    # Teto parte de cima 2
+    # Teto parte de cima 2 - CORRIGIDO: 20x32 em vez de 200x100
     for x in range(405, 665, 40):
-        paredes_rects.append(Rect(x, 360, 200, 100))
+        paredes_rects.append(Rect(x, 360, 20, 32))
 
-    # Teto da parte de cima 1
+    # Teto da parte de cima 1 - CORRIGIDO: tamanho pequeno
     for x, y, w in teto_cima_1:
-        paredes_rects.append(Rect(x, 470, w, 100))
+        paredes_rects.append(Rect(x, 470, 20, 32))
 
-    # Outras blits individuais
-    paredes_rects.append(Rect(447, 250, 200, 100))
-    paredes_rects.append(Rect(548, 250, 200, 79))
-    paredes_rects.append(Rect(680, 490, 200, 79))
-    paredes_rects.append(Rect(590, 490, 200, 79))
-    paredes_rects.append(Rect(915, 350, 200, 100))
-    paredes_rects.append(Rect(745, 350, 180, 100))
+    # Outras blits individuais - CORRIGIDO para tamanhos menores
+    paredes_rects.append(Rect(447, 250, 20, 32))
+    paredes_rects.append(Rect(548, 250, 20, 32))
+    paredes_rects.append(Rect(680, 490, 20, 32))
+    paredes_rects.append(Rect(590, 490, 20, 32))
+    paredes_rects.append(Rect(915, 350, 20, 32))
+    paredes_rects.append(Rect(745, 350, 20, 32))
 
     # Plataformas (coordenadas list)
     for x, y in coordenadas:
