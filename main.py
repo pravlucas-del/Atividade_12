@@ -27,6 +27,7 @@ vel_zant_x = 4
 zant_olhando_direita = True
 zant_olhando_cima = True
 vel_zant_y = 4
+zant_direcao = 0  # 0=direita, 1=cima, 2=baixo, 3=esquerda
 
 
 # Variáveis para animação da vela tipo A
@@ -126,18 +127,22 @@ while True:
     if keys[K_d]: # Direita
         velocidade_atual_zant_x = vel_zant_x
         zant_olhando_direita = True
+        zant_direcao = 0
         zant_andando = True
     elif keys[K_a]: # Esquerda
         velocidade_atual_zant_x = -vel_zant_x
         zant_olhando_direita = False
+        zant_direcao = 3
         zant_andando = True
 
     # 3. Verifica o Eixo Y (Vertical)
     if keys[K_w]: # Cima (No Pygame, para cima é NEGATIVO)
         velocidade_atual_zant_y = -vel_zant_y
+        zant_direcao = 1
         zant_andando = True
     elif keys[K_s]: # Baixo (No Pygame, para baixo é POSITIVO)
         velocidade_atual_zant_y = vel_zant_y
+        zant_direcao = 2
         zant_andando = True
 
     # 4. ATUALIZA A POSIÇÃO DO PERSONAGEM
@@ -343,7 +348,7 @@ while True:
 
     # Personagem
     zant_surface = Surface((64,64), SRCALPHA)
-    zant_surface.blit(zant, (0,0), (64*(curr_frame % 6), (curr_frame // 6)*64, 64, 64))
+    zant_surface.blit(zant, (0,0), (64*(curr_frame % 6), (zant_direcao)*64, 64, 64))
 
     if not zant_olhando_direita:
         zant_surface = transform.flip(zant_surface, True, False)
