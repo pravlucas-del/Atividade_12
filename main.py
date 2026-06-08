@@ -9,22 +9,22 @@ clock = time.Clock()
 
 #mapa = image.load("Atividade_12/Cenario/masmorra.png")
 #mapa = transform.scale(mapa, (1280, 720))  # Redimensiona o mapa para preencher a tela
-mapa_2 = image.load("Atividade_12/Cenario/masmorra.png")
+mapa_2 = image.load("Cenario/masmorra.png")
 pos_x = 0
 pos_y = 0
 
-mapa_3 = image.load("Atividade_12/sprites_separados/sprite_4.png")
-mapa_4 = image.load("Atividade_12/spritesheet.png")
-mapa_5 = image.load("Atividade_12/sprites_separados/sprite_24.png")
-mapa_6 = image.load("Atividade_12/imagens_masmorra/parede_2.png")
-mapa_7 = image.load("Atividade_12/imagens_masmorra/porta.png")
-mapa_8 = image.load("Atividade_12/imagens_masmorra/teto.png")
-mapa_9 = image.load("Atividade_12/imagens_masmorra/parede_esquerda.png")
+mapa_3 = image.load("sprites_separados/sprite_4.png")
+mapa_4 = image.load("spritesheet.png")
+mapa_5 = image.load("sprites_separados/sprite_24.png")
+mapa_6 = image.load("imagens_masmorra/parede_2.png")
+mapa_7 = image.load("imagens_masmorra/porta.png")
+mapa_8 = image.load("imagens_masmorra/teto.png")
+mapa_9 = image.load("imagens_masmorra/parede_esquerda.png")
 
 # Variáveis para animação do personagem
 curr_frame = 0
 anim_timer = 0
-zant = image.load("Atividade_12/personagem/png/swordsman_lvl3/with_shadow/swordsman_lvl3_walk_with_shadow.png")
+zant = image.load("swordsman_lvl3/with_shadow/swordsman_lvl3_walk_with_shadow.png")
 zant_x, zant_y = 600, 500  # CORRIGIDO: Posição inicial dentro do mapa
 vel_zant_x = 6  # AJUSTADO: Aumentado de 4 para movimento mais rápido
 zant_olhando_direita = True
@@ -37,14 +37,14 @@ curr_frame_vela = 0
 anim_timer_vela = 0
 vela = []
 for i in range(4):
-    vela.append(image.load(f"Atividade_12/Cenario/candleA_0{i+1}.png"))
+    vela.append(image.load(f"Cenario/candleA_0{i+1}.png"))
 
 # Variáveis para animação da vela tipo B
 curr_frame_vela_b = 0
 anim_timer_vela_b = 0
 vela_b = []
 for i in range(4):
-    vela_b.append(image.load(f"Atividade_12/Cenario/candleB_0{i+1}.png"))
+    vela_b.append(image.load(f"Cenario/candleB_0{i+1}.png"))
 
 # Variáveis dos espinhos
 curr_frame_spike = 0
